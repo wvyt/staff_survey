@@ -1,0 +1,922 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Summer Camp Staff — Return Interest Survey</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --gold: #C9A84C;
+    --gold-light: #E8C97A;
+    --cream: #FAF6EE;
+    --ink: #1A1209;
+    --burgundy: #6B1F2A;
+    --sage: #4A6741;
+    --slate: #3D4A5C;
+    --warm-gray: #8A8278;
+    --bg: #F5EFE3;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background-color: var(--bg);
+    font-family: 'DM Sans', sans-serif;
+    color: var(--ink);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Curtain background texture */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background:
+      repeating-linear-gradient(
+        90deg,
+        transparent,
+        transparent 60px,
+        rgba(201,168,76,0.04) 60px,
+        rgba(201,168,76,0.04) 61px
+      );
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .stage-wrapper {
+    position: relative;
+    z-index: 1;
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 60px 24px 100px;
+  }
+
+  /* ── HEADER ── */
+  .header {
+    text-align: center;
+    margin-bottom: 56px;
+    animation: fadeUp 0.8s ease both;
+  }
+
+  .curtain-icon {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-bottom: 20px;
+  }
+
+  .curtain-panel {
+    width: 34px;
+    height: 52px;
+    border-radius: 0 0 50% 50%;
+    position: relative;
+  }
+  .curtain-panel.left { background: var(--burgundy); transform: skewX(8deg); }
+  .curtain-panel.right { background: var(--burgundy); transform: skewX(-8deg); }
+  .curtain-panel::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 30%;
+    width: 30%; height: 100%;
+    background: rgba(255,255,255,0.12);
+    border-radius: inherit;
+  }
+
+  .spotlight {
+    width: 0;
+    height: 0;
+    border-left: 30px solid transparent;
+    border-right: 30px solid transparent;
+    border-top: 52px solid var(--gold);
+    opacity: 0.7;
+  }
+
+  .header-eyebrow {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 12px;
+  }
+
+  h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 900;
+    line-height: 1.1;
+    color: var(--ink);
+    margin-bottom: 8px;
+  }
+
+  h1 em {
+    font-style: italic;
+    color: var(--burgundy);
+  }
+
+  .header-sub {
+    font-size: 15px;
+    color: var(--warm-gray);
+    line-height: 1.6;
+    max-width: 480px;
+    margin: 16px auto 0;
+  }
+
+  /* ── DIVIDER ── */
+  .divider {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 32px 0;
+    color: var(--gold);
+    font-size: 18px;
+  }
+  .divider::before, .divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--gold-light), transparent);
+  }
+
+  /* ── CARDS ── */
+  .card {
+    background: var(--cream);
+    border: 1px solid rgba(201,168,76,0.2);
+    border-radius: 4px;
+    padding: 32px 36px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 16px rgba(26,18,9,0.06);
+    animation: fadeUp 0.6s ease both;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .card:nth-child(1) { animation-delay: 0.1s; }
+  .card:nth-child(2) { animation-delay: 0.2s; }
+  .card:nth-child(3) { animation-delay: 0.3s; }
+  .card:nth-child(4) { animation-delay: 0.4s; }
+  .card:nth-child(5) { animation-delay: 0.5s; }
+  .card:nth-child(6) { animation-delay: 0.6s; }
+
+  .card-label {
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 6px;
+  }
+
+  .card h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--ink);
+    margin-bottom: 20px;
+  }
+
+  /* ── FORM FIELDS ── */
+  label.field-label {
+    display: block;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--ink);
+    margin-bottom: 6px;
+    margin-top: 18px;
+  }
+
+  label.field-label:first-of-type { margin-top: 0; }
+
+  input[type="text"],
+  input[type="email"],
+  input[type="tel"],
+  textarea,
+  select {
+    width: 100%;
+    padding: 10px 14px;
+    background: white;
+    border: 1px solid rgba(138,130,120,0.3);
+    border-radius: 3px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    color: var(--ink);
+    transition: border-color 0.2s, box-shadow 0.2s;
+    outline: none;
+  }
+
+  input:focus, textarea:focus, select:focus {
+    border-color: var(--gold);
+    box-shadow: 0 0 0 3px rgba(201,168,76,0.15);
+  }
+
+  textarea { resize: vertical; min-height: 80px; }
+
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+
+  @media (max-width: 500px) { .two-col { grid-template-columns: 1fr; } }
+
+  /* ── RADIO / CHECKBOX ── */
+  .radio-group, .checkbox-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .radio-group.inline, .checkbox-group.inline {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .choice-label {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    cursor: pointer;
+    padding: 8px 14px;
+    border: 1px solid rgba(138,130,120,0.25);
+    border-radius: 3px;
+    background: white;
+    font-size: 14px;
+    transition: border-color 0.15s, background 0.15s;
+    user-select: none;
+  }
+
+  .choice-label:hover {
+    border-color: var(--gold-light);
+    background: #FFFDF5;
+  }
+
+  .choice-label input[type="radio"],
+  .choice-label input[type="checkbox"] {
+    width: auto;
+    accent-color: var(--gold);
+    width: 15px; height: 15px;
+    flex-shrink: 0;
+    border: none;
+    box-shadow: none;
+    padding: 0;
+  }
+
+  .choice-label:has(input:checked) {
+    border-color: var(--gold);
+    background: #FFFBEE;
+  }
+
+  /* ── CAMP CARDS ── */
+  .camp-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+
+  @media (max-width: 520px) { .camp-grid { grid-template-columns: 1fr; } }
+
+  .camp-card {
+    border: 1.5px solid rgba(138,130,120,0.2);
+    border-radius: 4px;
+    overflow: hidden;
+    background: white;
+    transition: border-color 0.2s, transform 0.15s;
+    cursor: pointer;
+  }
+
+  .camp-card:hover { border-color: var(--gold-light); transform: translateY(-1px); }
+  .camp-card:has(input:checked) { border-color: var(--gold); }
+
+  .camp-header {
+    padding: 12px 14px 8px;
+    position: relative;
+  }
+
+  .camp-header::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 14px; right: 14px;
+    height: 1px;
+    background: rgba(138,130,120,0.15);
+  }
+
+  .camp-title {
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    font-size: 1rem;
+    line-height: 1.2;
+    color: var(--ink);
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .camp-title input[type="checkbox"] {
+    width: 15px; height: 15px;
+    accent-color: var(--gold);
+    flex-shrink: 0;
+    margin-top: 2px;
+    border: none;
+    box-shadow: none;
+    padding: 0;
+  }
+
+  .camp-meta {
+    padding: 10px 14px 12px;
+    font-size: 12px;
+    color: var(--warm-gray);
+    line-height: 1.65;
+  }
+
+  .camp-tag {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 2px 7px;
+    border-radius: 2px;
+    margin-bottom: 6px;
+  }
+
+  .tag-kids { background: #EEF6E8; color: var(--sage); }
+  .tag-jr { background: #EEF0F6; color: var(--slate); }
+
+  /* availability sub-section */
+  .avail-section {
+    display: none;
+    margin-top: 6px;
+    padding-top: 8px;
+    border-top: 1px dashed rgba(138,130,120,0.2);
+    font-size: 12px;
+  }
+
+  .avail-section.visible { display: block; }
+
+  .avail-label {
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--warm-gray);
+    margin-bottom: 6px;
+  }
+
+  .avail-checks {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .avail-chip {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 11px;
+    padding: 4px 8px;
+    border: 1px solid rgba(138,130,120,0.2);
+    border-radius: 20px;
+    background: #F9F6EF;
+    cursor: pointer;
+    transition: border-color 0.15s, background 0.15s;
+    user-select: none;
+  }
+
+  .avail-chip input { width: 12px; height: 12px; accent-color: var(--gold); padding: 0; border: none; box-shadow: none; }
+  .avail-chip:has(input:checked) { border-color: var(--gold); background: #FFFBEE; }
+
+  /* ── RATING STARS ── */
+  .star-group {
+    display: flex;
+    gap: 6px;
+    margin-top: 4px;
+  }
+
+  .star-group input { display: none; }
+
+  .star-group label {
+    font-size: 26px;
+    cursor: pointer;
+    color: #D9CFC0;
+    transition: color 0.1s;
+    line-height: 1;
+  }
+
+  .star-group:has(input:nth-child(2):checked) ~ .star-hint::before { content: 'Not very interested'; }
+
+  .star-group label:hover,
+  .star-group label:hover ~ label,
+  .star-group input:checked ~ label { color: var(--gold); }
+
+  .star-group input:checked + label { color: var(--gold); }
+
+  /* Reverse order trick for CSS-only star rating */
+  .star-group { flex-direction: row-reverse; justify-content: flex-end; }
+  .star-group label:hover,
+  .star-group label:hover ~ label { color: var(--gold-light); }
+  .star-group input:checked ~ label { color: var(--gold); }
+  .star-group input:checked + label { color: var(--gold); }
+
+  /* ── ROLES ── */
+  .role-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .role-chip {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    border: 1px solid rgba(138,130,120,0.25);
+    border-radius: 20px;
+    font-size: 13px;
+    background: white;
+    cursor: pointer;
+    transition: border-color 0.15s, background 0.15s;
+    user-select: none;
+  }
+
+  .role-chip input { width: 14px; height: 14px; accent-color: var(--gold); padding: 0; border: none; box-shadow: none; }
+  .role-chip:has(input:checked) { border-color: var(--gold); background: #FFFBEE; }
+
+  /* ── SUBMIT ── */
+  .submit-area {
+    text-align: center;
+    margin-top: 40px;
+    animation: fadeUp 0.6s 0.7s ease both;
+  }
+
+  .btn-submit {
+    display: inline-block;
+    padding: 14px 48px;
+    background: var(--burgundy);
+    color: white;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+    box-shadow: 0 4px 20px rgba(107,31,42,0.25);
+  }
+
+  .btn-submit:hover {
+    background: #531722;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 28px rgba(107,31,42,0.35);
+  }
+
+  .btn-submit:active { transform: translateY(0); }
+
+  .submit-note {
+    margin-top: 12px;
+    font-size: 12px;
+    color: var(--warm-gray);
+  }
+
+  /* ── SUCCESS STATE ── */
+  .success-screen {
+    display: none;
+    text-align: center;
+    padding: 80px 40px;
+    animation: fadeUp 0.6s ease both;
+  }
+
+  .success-screen.visible { display: block; }
+
+  .success-icon {
+    font-size: 60px;
+    margin-bottom: 20px;
+  }
+
+  .success-screen h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem;
+    margin-bottom: 12px;
+    color: var(--ink);
+  }
+
+  .success-screen p {
+    color: var(--warm-gray);
+    font-size: 15px;
+    line-height: 1.6;
+  }
+
+  /* ── HELPER ── */
+  .helper-text {
+    font-size: 12px;
+    color: var(--warm-gray);
+    margin-top: 5px;
+    font-style: italic;
+  }
+
+  .section-intro {
+    font-size: 13.5px;
+    color: var(--warm-gray);
+    margin-bottom: 16px;
+    line-height: 1.6;
+  }
+
+  .required-star { color: var(--burgundy); }
+</style>
+</head>
+<body>
+
+<div class="stage-wrapper">
+
+  <!-- Header -->
+  <div class="header">
+    <div class="curtain-icon">
+      <div class="curtain-panel left"></div>
+      <div class="spotlight"></div>
+      <div class="curtain-panel right"></div>
+    </div>
+    <p class="header-eyebrow">Summer 2025 · Staff Interest Survey</p>
+    <h1>The Stage <em>Awaits</em></h1>
+    <p class="header-sub">We'd love to have you back this summer! Tell us about your availability and interest in our upcoming camps so we can start putting the cast together.</p>
+  </div>
+
+  <div id="form-body">
+
+    <!-- Section 1: Contact Info -->
+    <div class="card">
+      <p class="card-label">Act I</p>
+      <h2>About You</h2>
+
+      <div class="two-col">
+        <div>
+          <label class="field-label" for="fname">First Name <span class="required-star">*</span></label>
+          <input type="text" id="fname" placeholder="First name" required>
+        </div>
+        <div>
+          <label class="field-label" for="lname">Last Name <span class="required-star">*</span></label>
+          <input type="text" id="lname" placeholder="Last name" required>
+        </div>
+      </div>
+
+      <label class="field-label" for="email">Email Address <span class="required-star">*</span></label>
+      <input type="email" id="email" placeholder="your@email.com" required>
+
+      <label class="field-label" for="phone">Best Phone Number</label>
+      <input type="tel" id="phone" placeholder="(optional)">
+
+      <label class="field-label" for="pronouns">Preferred Pronouns</label>
+      <input type="text" id="pronouns" placeholder="e.g. she/her, they/them">
+    </div>
+
+    <!-- Section 2: General Interest -->
+    <div class="card">
+      <p class="card-label">Act II</p>
+      <h2>Overall Interest</h2>
+
+      <label class="field-label">How interested are you in returning to work with us this summer? <span class="required-star">*</span></label>
+      <div class="radio-group" style="margin-top: 6px;">
+        <label class="choice-label">
+          <input type="radio" name="overall_interest" value="definitely">
+          🎭 Definitely — I'm in, can't wait!
+        </label>
+        <label class="choice-label">
+          <input type="radio" name="overall_interest" value="likely">
+          ✨ Likely — I'm interested, pending details
+        </label>
+        <label class="choice-label">
+          <input type="radio" name="overall_interest" value="maybe">
+          🤔 Maybe — Need to see what works with my schedule
+        </label>
+        <label class="choice-label">
+          <input type="radio" name="overall_interest" value="not_this_year">
+          😔 Not this year — but keep me in mind for the future!
+        </label>
+      </div>
+
+      <label class="field-label" style="margin-top: 20px;">Compared to last summer, how do you feel about the upcoming season?</label>
+      <div class="radio-group inline" style="margin-top: 6px;">
+        <label class="choice-label">
+          <input type="radio" name="enthusiasm" value="more"> More excited
+        </label>
+        <label class="choice-label">
+          <input type="radio" name="enthusiasm" value="same"> About the same
+        </label>
+        <label class="choice-label">
+          <input type="radio" name="enthusiasm" value="less"> A bit less sure
+        </label>
+      </div>
+    </div>
+
+    <!-- Section 3: Role Preferences -->
+    <div class="card">
+      <p class="card-label">Act III</p>
+      <h2>Roles & Responsibilities</h2>
+
+      <p class="section-intro">Which roles are you interested in or qualified for? Select all that apply.</p>
+
+      <div class="role-chips">
+        <label class="role-chip"><input type="checkbox" name="role" value="asst_choreographer"> 💃 Asst. Choreographer</label>
+        <label class="role-chip"><input type="checkbox" name="role" value="asst_vocal_coach"> 🎤 Asst. Vocal Coach</label>
+        <label class="role-chip"><input type="checkbox" name="role" value="stage_manager"> 📋 Stage Manager</label>
+        <label class="role-chip"><input type="checkbox" name="role" value="counselor"> 🌟 Counselor</label>
+        <label class="role-chip"><input type="checkbox" name="role" value="tech_operator"> 🔦 Tech Operator</label>
+        <label class="role-chip"><input type="checkbox" name="role" value="costumes"> 🧵 Costumes</label>
+        <label class="role-chip"><input type="checkbox" name="role" value="props_sets"> 🪄 Props / Sets</label>
+      </div>
+
+      <label class="field-label" style="margin-top: 20px;">Any role you haven't done with us that you'd love to try?</label>
+      <input type="text" id="new_role" placeholder="e.g. Music Director, Stage Manager...">
+    </div>
+
+    <!-- Section 4: Camp Availability -->
+    <div class="card">
+      <p class="card-label">Act IV</p>
+      <h2>Camp Interest & Availability</h2>
+
+      <p class="section-intro">Check each camp you're interested in working. Once selected, you'll be able to note your availability for specific weeks or performance dates.</p>
+
+      <div class="camp-grid">
+
+        <!-- Annie Kids -->
+        <div class="camp-card" id="card-annie">
+          <div class="camp-header">
+            <div class="camp-title">
+              <input type="checkbox" id="chk-annie" onchange="toggleCamp('annie')">
+              <span>Annie Kids</span>
+            </div>
+          </div>
+          <div class="camp-meta">
+            <span class="camp-tag tag-kids">Ages 7–11</span><br>
+            📅 June 8 – 19<br>
+            🎭 4 casts · 1 perf each<br>
+            🌟 All performances June 19 (afternoon)
+            <div class="avail-section" id="avail-annie">
+              <div class="avail-label">Available for:</div>
+              <div class="avail-checks">
+                <label class="avail-chip"><input type="checkbox" name="annie_avail" value="full"> Full camp (Jun 8–19)</label>
+                <label class="avail-chip"><input type="checkbox" name="annie_avail" value="week1"> Week 1 only (Jun 8–13)</label>
+                <label class="avail-chip"><input type="checkbox" name="annie_avail" value="week2"> Week 2 only (Jun 15–19)</label>
+                <label class="avail-chip"><input type="checkbox" name="annie_avail" value="perfs"> Performance day only (Jun 19)</label>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Matilda Jr -->
+        <div class="camp-card" id="card-matilda">
+          <div class="camp-header">
+            <div class="camp-title">
+              <input type="checkbox" id="chk-matilda" onchange="toggleCamp('matilda')">
+              <span>Matilda Jr.</span>
+            </div>
+          </div>
+          <div class="camp-meta">
+            <span class="camp-tag tag-jr">Ages 11–16</span><br>
+            📅 June 8 – 27<br>
+            🎭 2 casts · 2 perfs each<br>
+            🌟 Performances Jun 26 & 27
+            <div class="avail-section" id="avail-matilda">
+              <div class="avail-label">Available for:</div>
+              <div class="avail-checks">
+                <label class="avail-chip"><input type="checkbox" name="matilda_avail" value="full"> Full camp (Jun 8–27)</label>
+                <label class="avail-chip"><input type="checkbox" name="matilda_avail" value="week1"> Week 1 (Jun 8–13)</label>
+                <label class="avail-chip"><input type="checkbox" name="matilda_avail" value="week2"> Week 2 (Jun 15–20)</label>
+                <label class="avail-chip"><input type="checkbox" name="matilda_avail" value="week3"> Week 3 (Jun 23–27)</label>
+                <label class="avail-chip"><input type="checkbox" name="matilda_avail" value="perfs"> Perf. days only (Jun 26–27)</label>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Jungle Book Kids -->
+        <div class="camp-card" id="card-jungle">
+          <div class="camp-header">
+            <div class="camp-title">
+              <input type="checkbox" id="chk-jungle" onchange="toggleCamp('jungle')">
+              <span>Jungle Book Kids</span>
+            </div>
+          </div>
+          <div class="camp-meta">
+            <span class="camp-tag tag-kids">Ages 7–11</span><br>
+            📅 July 6 – 17<br>
+            🎭 4 casts · 1 perf each<br>
+            🌟 All performances July 17 (afternoon)
+            <div class="avail-section" id="avail-jungle">
+              <div class="avail-label">Available for:</div>
+              <div class="avail-checks">
+                <label class="avail-chip"><input type="checkbox" name="jungle_avail" value="full"> Full camp (Jul 6–17)</label>
+                <label class="avail-chip"><input type="checkbox" name="jungle_avail" value="week1"> Week 1 only (Jul 6–11)</label>
+                <label class="avail-chip"><input type="checkbox" name="jungle_avail" value="week2"> Week 2 only (Jul 13–17)</label>
+                <label class="avail-chip"><input type="checkbox" name="jungle_avail" value="perfs"> Performance day only (Jul 17)</label>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 13 the Musical -->
+        <div class="camp-card" id="card-thirteen">
+          <div class="camp-header">
+            <div class="camp-title">
+              <input type="checkbox" id="chk-thirteen" onchange="toggleCamp('thirteen')">
+              <span>13 the Musical</span>
+            </div>
+          </div>
+          <div class="camp-meta">
+            <span class="camp-tag tag-jr">Ages 11–15</span><br>
+            📅 July 6 – August 1<br>
+            🎭 3 casts · 2 perfs each<br>
+            🌟 Performances Jul 30, 31, Aug 1
+            <div class="avail-section" id="avail-thirteen">
+              <div class="avail-label">Available for:</div>
+              <div class="avail-checks">
+                <label class="avail-chip"><input type="checkbox" name="thirteen_avail" value="full"> Full camp (Jul 6–Aug 1)</label>
+                <label class="avail-chip"><input type="checkbox" name="thirteen_avail" value="week1"> Week 1 (Jul 6–11)</label>
+                <label class="avail-chip"><input type="checkbox" name="thirteen_avail" value="week2"> Week 2 (Jul 13–18)</label>
+                <label class="avail-chip"><input type="checkbox" name="thirteen_avail" value="week3"> Week 3 (Jul 20–25)</label>
+                <label class="avail-chip"><input type="checkbox" name="thirteen_avail" value="week4"> Week 4 (Jul 27–Aug 1)</label>
+                <label class="avail-chip"><input type="checkbox" name="thirteen_avail" value="perfs"> Perf. days only (Jul 30–Aug 1)</label>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <label class="field-label" style="margin-top: 24px;">Any scheduling constraints or conflicts we should know about?</label>
+      <textarea id="schedule_notes" placeholder="e.g. vacation July 20–24, available mornings only certain weeks..."></textarea>
+    </div>
+
+    <!-- Section 5: Age Group Preference -->
+    <div class="card">
+      <p class="card-label">Act V</p>
+      <h2>Working with Campers</h2>
+
+      <label class="field-label">Which age group do you most enjoy working with?</label>
+      <div class="radio-group inline" style="margin-top: 6px;">
+        <label class="choice-label">
+          <input type="radio" name="age_pref" value="younger"> Younger (7–11)
+        </label>
+        <label class="choice-label">
+          <input type="radio" name="age_pref" value="older"> Older (11–16)
+        </label>
+        <label class="choice-label">
+          <input type="radio" name="age_pref" value="both"> Love both equally
+        </label>
+      </div>
+
+      <label class="field-label" style="margin-top: 20px;">What's been your favorite part of working with our campers in past summers?</label>
+      <textarea id="fav_part" placeholder="Tell us what made it special..."></textarea>
+
+      <label class="field-label">Is there anything you'd like to do differently or improve upon this year?</label>
+      <textarea id="improve" placeholder="We love honest feedback!"></textarea>
+    </div>
+
+    <!-- Section 6: Anything Else -->
+    <div class="card">
+      <p class="card-label">Curtain Call</p>
+      <h2>Final Notes</h2>
+
+      <label class="field-label">Is there anyone you'd love to work alongside again — or someone new you'd recommend we reach out to?</label>
+      <textarea id="recommend" placeholder="Names and best way to reach them..."></textarea>
+
+      <label class="field-label" style="margin-top: 20px;">Any questions, requests, or things you want us to know as we plan the season?</label>
+      <textarea id="other_notes" placeholder="The stage is yours..."></textarea>
+
+      <label class="field-label" style="margin-top: 20px;">How did working with us last summer affect you?</label>
+      <div class="radio-group inline" style="margin-top: 6px;">
+        <label class="choice-label">
+          <input type="radio" name="impact" value="very_positive"> Very positively
+        </label>
+        <label class="choice-label">
+          <input type="radio" name="impact" value="positive"> Positively
+        </label>
+        <label class="choice-label">
+          <input type="radio" name="impact" value="neutral"> It was a job
+        </label>
+        <label class="choice-label">
+          <input type="radio" name="impact" value="mixed"> Mixed feelings
+        </label>
+      </div>
+    </div>
+
+    <!-- Submit -->
+    <div class="submit-area">
+      <button class="btn-submit" onclick="submitForm()">Send My Response 🎭</button>
+      <p class="submit-note">We'll follow up with you personally once we've reviewed responses. Thank you!</p>
+    </div>
+
+  </div><!-- /#form-body -->
+
+  <!-- Success State -->
+  <div class="success-screen" id="success-screen">
+    <div class="success-icon">🎭</div>
+    <h2>The curtain rises!</h2>
+    <p>Thank you for letting us know your interest and availability.<br>We'll be in touch soon to talk details.<br><br>Can't wait to make some magic with you this summer.</p>
+  </div>
+
+</div><!-- /.stage-wrapper -->
+
+<script>
+  // !! Replace the value below with your deployed Web App URL !!
+  const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzr41Qaw436ydV1VnPkadJBOxsqrQYDESa2t8_cJRGuX9PinWL2y2LwZ2PvCxx6frXi/exec";
+
+  function toggleCamp(id) {
+    const checkbox = document.getElementById('chk-' + id);
+    const avail = document.getElementById('avail-' + id);
+    if (checkbox.checked) {
+      avail.classList.add('visible');
+    } else {
+      avail.classList.remove('visible');
+    }
+  }
+
+  function getCheckedValues(name) {
+    return [...document.querySelectorAll(`input[name="${name}"]:checked`)]
+      .map(el => el.value);
+  }
+
+  async function submitForm() {
+    // Validation
+    const fname    = document.getElementById('fname').value.trim();
+    const lname    = document.getElementById('lname').value.trim();
+    const email    = document.getElementById('email').value.trim();
+    const interest = document.querySelector('input[name="overall_interest"]:checked');
+
+    if (!fname || !lname) {
+      alert('Please enter your name before submitting.');
+      return;
+    }
+    if (!email || !email.includes('@')) {
+      alert('Please enter a valid email address.');
+      return;
+    }
+    if (!interest) {
+      alert('Please select your overall interest level (Act II).');
+      return;
+    }
+
+    // Disable button to prevent double-submit
+    const btn = document.querySelector('.btn-submit');
+    btn.disabled = true;
+    btn.textContent = 'Sending\u2026 \uD83C\uDFAD';
+
+    // Collect all form data
+    const payload = {
+      fname:    fname,
+      lname:    lname,
+      email:    email,
+      phone:    document.getElementById('phone').value.trim(),
+      pronouns: document.getElementById('pronouns').value.trim(),
+
+      overall_interest: interest.value,
+      enthusiasm: (document.querySelector('input[name="enthusiasm"]:checked') || {}).value || "",
+
+      roles:    getCheckedValues('role'),
+      new_role: document.getElementById('new_role').value.trim(),
+
+      annie_interested:    document.getElementById('chk-annie').checked,
+      annie_avail:         getCheckedValues('annie_avail'),
+      matilda_interested:  document.getElementById('chk-matilda').checked,
+      matilda_avail:       getCheckedValues('matilda_avail'),
+      jungle_interested:   document.getElementById('chk-jungle').checked,
+      jungle_avail:        getCheckedValues('jungle_avail'),
+      thirteen_interested: document.getElementById('chk-thirteen').checked,
+      thirteen_avail:      getCheckedValues('thirteen_avail'),
+
+      schedule_notes: document.getElementById('schedule_notes').value.trim(),
+      age_pref:       (document.querySelector('input[name="age_pref"]:checked') || {}).value || "",
+      fav_part:       document.getElementById('fav_part').value.trim(),
+      improve:        document.getElementById('improve').value.trim(),
+      recommend:      document.getElementById('recommend').value.trim(),
+      other_notes:    document.getElementById('other_notes').value.trim(),
+      impact:         (document.querySelector('input[name="impact"]:checked') || {}).value || ""
+    };
+
+    // POST to Apps Script
+    // Note: no Content-Type header set — Apps Script requires this for CORS
+    try {
+      await fetch(SCRIPT_URL, {
+        method: 'POST',
+        body:   JSON.stringify(payload)
+      });
+
+      document.getElementById('form-body').style.display = 'none';
+      document.getElementById('success-screen').classList.add('visible');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+
+    } catch (err) {
+      btn.disabled = false;
+      btn.textContent = 'Send My Response \uD83C\uDFAD';
+      alert('Something went wrong. Please try again or contact us directly.');
+      console.error(err);
+    }
+  }
+</script>
+</body>
+</html>
