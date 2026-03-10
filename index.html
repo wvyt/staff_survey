@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Summer Camp Staff — Return Interest Survey</title>
+<title>WVYT Summer Camp Staff — Interest Survey</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
   :root {
@@ -528,6 +528,15 @@
   }
 
   .required-star { color: var(--burgundy); }
+
+  /* ── RESPONDENT-TYPE ADAPTIVE VISIBILITY ── */
+  /* These are toggled by JS after reading the URL param */
+  .returning-only { display: none; }
+  .new-only       { display: none; }
+  body.is-returning .returning-only { display: block; }
+  body.is-new      .new-only        { display: block; }
+  body.is-returning .returning-only.inline-flex { display: flex; }
+  body.is-new      .new-only.inline-flex        { display: flex; }
 </style>
 </head>
 <body>
@@ -541,9 +550,10 @@
       <div class="spotlight"></div>
       <div class="curtain-panel right"></div>
     </div>
-    <p class="header-eyebrow">Summer 2025 · Staff Interest Survey</p>
+    <p class="header-eyebrow">WVYT Summer 2026 · Staff Interest Survey</p>
     <h1>The Stage <em>Awaits</em></h1>
-    <p class="header-sub">We'd love to have you back this summer! Tell us about your availability and interest in our upcoming camps so we can start putting the cast together.</p>
+    <p class="header-sub returning-only">We'd love to have you back this summer! Tell us about your availability and interest in our upcoming camps so we can start putting the cast together.</p>
+    <p class="header-sub new-only">We're so glad you're interested in joining our team! Tell us a bit about yourself and which camps excite you — we'd love to find a great fit.</p>
   </div>
 
   <div id="form-body">
@@ -579,38 +589,66 @@
       <p class="card-label">Act II</p>
       <h2>Overall Interest</h2>
 
-      <label class="field-label">How interested are you in returning to work with us this summer? <span class="required-star">*</span></label>
-      <div class="radio-group" style="margin-top: 6px;">
-        <label class="choice-label">
-          <input type="radio" name="overall_interest" value="definitely">
-          🎭 Definitely — I'm in, can't wait!
-        </label>
-        <label class="choice-label">
-          <input type="radio" name="overall_interest" value="likely">
-          ✨ Likely — I'm interested, pending details
-        </label>
-        <label class="choice-label">
-          <input type="radio" name="overall_interest" value="maybe">
-          🤔 Maybe — Need to see what works with my schedule
-        </label>
-        <label class="choice-label">
-          <input type="radio" name="overall_interest" value="not_this_year">
-          😔 Not this year — but keep me in mind for the future!
-        </label>
+      <!-- Returning staff version -->
+      <div class="returning-only">
+        <label class="field-label">How interested are you in returning to work with us this summer? <span class="required-star">*</span></label>
+        <div class="radio-group" style="margin-top: 6px;">
+          <label class="choice-label">
+            <input type="radio" name="overall_interest" value="definitely">
+            🎭 Definitely — I'm in, can't wait!
+          </label>
+          <label class="choice-label">
+            <input type="radio" name="overall_interest" value="likely">
+            ✨ Likely — I'm interested, pending details
+          </label>
+          <label class="choice-label">
+            <input type="radio" name="overall_interest" value="maybe">
+            🤔 Maybe — Need to see what works with my schedule
+          </label>
+          <label class="choice-label">
+            <input type="radio" name="overall_interest" value="not_this_year">
+            😔 Not this year — but keep me in mind for the future!
+          </label>
+        </div>
+        <label class="field-label" style="margin-top: 20px;">Compared to last summer, how do you feel about the upcoming season?</label>
+        <div class="radio-group inline" style="margin-top: 6px;">
+          <label class="choice-label">
+            <input type="radio" name="enthusiasm" value="more"> More excited
+          </label>
+          <label class="choice-label">
+            <input type="radio" name="enthusiasm" value="same"> About the same
+          </label>
+          <label class="choice-label">
+            <input type="radio" name="enthusiasm" value="less"> A bit less sure
+          </label>
+        </div>
       </div>
 
-      <label class="field-label" style="margin-top: 20px;">Compared to last summer, how do you feel about the upcoming season?</label>
-      <div class="radio-group inline" style="margin-top: 6px;">
-        <label class="choice-label">
-          <input type="radio" name="enthusiasm" value="more"> More excited
-        </label>
-        <label class="choice-label">
-          <input type="radio" name="enthusiasm" value="same"> About the same
-        </label>
-        <label class="choice-label">
-          <input type="radio" name="enthusiasm" value="less"> A bit less sure
-        </label>
+      <!-- New applicant version -->
+      <div class="new-only">
+        <label class="field-label">How interested are you in joining our team this summer? <span class="required-star">*</span></label>
+        <div class="radio-group" style="margin-top: 6px;">
+          <label class="choice-label">
+            <input type="radio" name="overall_interest" value="definitely">
+            🎭 Definitely — I'm excited and ready!
+          </label>
+          <label class="choice-label">
+            <input type="radio" name="overall_interest" value="likely">
+            ✨ Likely — Very interested, just want to learn more
+          </label>
+          <label class="choice-label">
+            <input type="radio" name="overall_interest" value="maybe">
+            🤔 Maybe — Need to see what fits my schedule
+          </label>
+          <label class="choice-label">
+            <input type="radio" name="overall_interest" value="not_this_year">
+            😔 Not this summer — but keep me in mind!
+          </label>
+        </div>
+        <label class="field-label" style="margin-top: 20px;">How did you hear about us?</label>
+        <input type="text" id="how_heard" placeholder="e.g. a friend, social media, saw a show...">
       </div>
+
     </div>
 
     <!-- Section 3: Role Preferences -->
@@ -631,7 +669,7 @@
       </div>
 
       <label class="field-label" style="margin-top: 20px;">Any role you haven't done with us that you'd love to try?</label>
-      <input type="text" id="new_role" placeholder="e.g. Music Director, Stage Manager...">
+      <input type="text" id="new_role" placeholder="e.g. Sound, Props/Sets, Stage Manager...">
     </div>
 
     <!-- Section 4: Camp Availability -->
@@ -770,11 +808,15 @@
         </label>
       </div>
 
-      <label class="field-label" style="margin-top: 20px;">What's been your favorite part of working with our campers in past summers?</label>
-      <textarea id="fav_part" placeholder="Tell us what made it special..."></textarea>
+      <!-- Returning only: past experience questions -->
+      <div class="returning-only">
+        <label class="field-label" style="margin-top: 20px;">What's been your favorite part of working with our campers in past summers?</label>
+        <textarea id="fav_part" placeholder="Tell us what made it special..."></textarea>
 
-      <label class="field-label">Is there anything you'd like to do differently or improve upon this year?</label>
-      <textarea id="improve" placeholder="We love honest feedback!"></textarea>
+        <label class="field-label">Is there anything you'd like to do differently or improve upon this year?</label>
+        <textarea id="improve" placeholder="We love honest feedback!"></textarea>
+      </div>
+
     </div>
 
     <!-- Section 6: Anything Else -->
@@ -782,27 +824,31 @@
       <p class="card-label">Curtain Call</p>
       <h2>Final Notes</h2>
 
-      <label class="field-label">Is there anyone you'd love to work alongside again — or someone new you'd recommend we reach out to?</label>
+      <label class="field-label">Is there anyone you'd recommend we reach out to — or someone you'd love to work alongside?</label>
       <textarea id="recommend" placeholder="Names and best way to reach them..."></textarea>
 
       <label class="field-label" style="margin-top: 20px;">Any questions, requests, or things you want us to know as we plan the season?</label>
       <textarea id="other_notes" placeholder="The stage is yours..."></textarea>
 
-      <label class="field-label" style="margin-top: 20px;">How did working with us last summer affect you?</label>
-      <div class="radio-group inline" style="margin-top: 6px;">
-        <label class="choice-label">
-          <input type="radio" name="impact" value="very_positive"> Very positively
-        </label>
-        <label class="choice-label">
-          <input type="radio" name="impact" value="positive"> Positively
-        </label>
-        <label class="choice-label">
-          <input type="radio" name="impact" value="neutral"> It was a job
-        </label>
-        <label class="choice-label">
-          <input type="radio" name="impact" value="mixed"> Mixed feelings
-        </label>
+      <!-- Returning only: how did last summer affect you -->
+      <div class="returning-only">
+        <label class="field-label" style="margin-top: 20px;">How did working with us last summer affect you?</label>
+        <div class="radio-group inline" style="margin-top: 6px;">
+          <label class="choice-label">
+            <input type="radio" name="impact" value="very_positive"> Very positively
+          </label>
+          <label class="choice-label">
+            <input type="radio" name="impact" value="positive"> Positively
+          </label>
+          <label class="choice-label">
+            <input type="radio" name="impact" value="neutral"> It was a job
+          </label>
+          <label class="choice-label">
+            <input type="radio" name="impact" value="mixed"> Mixed feelings
+          </label>
+        </div>
       </div>
+
     </div>
 
     <!-- Submit -->
@@ -817,14 +863,20 @@
   <div class="success-screen" id="success-screen">
     <div class="success-icon">🎭</div>
     <h2>The curtain rises!</h2>
-    <p>Thank you for letting us know your interest and availability.<br>We'll be in touch soon to talk details.<br><br>Can't wait to make some magic with you this summer.</p>
+    <p>Thank you for letting us know your interest and availability.<br>We'll be in touch soon to talk details.<br><br>Can't wait to make some WVYT magic with you this summer.</p>
   </div>
 
 </div><!-- /.stage-wrapper -->
 
 <script>
-  // !! Replace the value below with your deployed Web App URL !!
-  const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxpHtOfKk_qBCalp3chV9FucII2ciPrMTSBfXZng7VWv-kZebeuRERZlQHNvVoZUbWp/exec";
+  const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxeQ02WXpwmJw3AWLkrwfJspTn-1F_aN6jJ-bGqQUo7p-ix_DnAOOXFXvipJQ3xpTmN/exec";
+
+  // ── DETECT RESPONDENT TYPE FROM URL PARAM ──────────────────
+  // Returning staff:  ?type=returning  (or no param — safe default)
+  // New applicants:   ?type=new
+  const urlParams = new URLSearchParams(window.location.search);
+  const respondentType = urlParams.get('type') === 'new' ? 'new' : 'returning';
+  document.body.classList.add(respondentType === 'new' ? 'is-new' : 'is-returning');
 
   function toggleCamp(id) {
     const checkbox = document.getElementById('chk-' + id);
@@ -868,6 +920,8 @@
 
     // Collect all form data
     const payload = {
+      respondent_type: respondentType,
+
       fname:    fname,
       lname:    lname,
       email:    email,
@@ -875,7 +929,10 @@
       pronouns: document.getElementById('pronouns').value.trim(),
 
       overall_interest: interest.value,
+      // Returning only
       enthusiasm: (document.querySelector('input[name="enthusiasm"]:checked') || {}).value || "",
+      // New only
+      how_heard: (document.getElementById('how_heard') || {}).value?.trim() || "",
 
       roles:    getCheckedValues('role'),
       new_role: document.getElementById('new_role').value.trim(),
@@ -891,15 +948,14 @@
 
       schedule_notes: document.getElementById('schedule_notes').value.trim(),
       age_pref:       (document.querySelector('input[name="age_pref"]:checked') || {}).value || "",
-      fav_part:       document.getElementById('fav_part').value.trim(),
-      improve:        document.getElementById('improve').value.trim(),
+      fav_part:       (document.getElementById('fav_part') || {}).value?.trim() || "",
+      improve:        (document.getElementById('improve') || {}).value?.trim() || "",
       recommend:      document.getElementById('recommend').value.trim(),
       other_notes:    document.getElementById('other_notes').value.trim(),
       impact:         (document.querySelector('input[name="impact"]:checked') || {}).value || ""
     };
 
     // POST to Apps Script
-    // Note: no Content-Type header set — Apps Script requires this for CORS
     try {
       await fetch(SCRIPT_URL, {
         method: 'POST',
